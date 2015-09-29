@@ -87,7 +87,7 @@ The following operators are available. Their result is pushed onto the stack.
 
 OP | Operation | Logical Return Value
 -- | --------- | --------------------
-A  | -         | `0`
+A  | /         | `0`
 B  | NOR       | `~(a|b)`
 C  | NIMPL     | `(~a) & b`
 D  | NOT       | `~a`
@@ -97,12 +97,12 @@ G  | XOR       | `a^b`
 H  | NAND      | `~(a&b)`
 I  | AND       | `a&b`
 J  | NXOR      | `~(a^b)`
-K  | -         | `b`
+K  | /         | `b`
 L  | IMPL      | `~(a & (~b))`
-M  | -         | `a`
+M  | /         | `a`
 N  | IMPL      | `~(b & (~a))`
 O  | OR        | `a|b`
-P  | -         | `255`
+P  | /         | `255`
 
 ### IO
 
