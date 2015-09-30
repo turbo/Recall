@@ -83,24 +83,18 @@ b        | Result from second POP
 
 The following operators are available. Their result is pushed onto the stack.
 
-OP | Operation | Logical Return Value
---- | --------- | --------------------
-A  | /         | `0`
-B  | NOR       | `~(a|b)`
-C  | NIMPL     | `(~a) & b`
-D  | NOT       | `~a`
-E  | NIMPL     | `a & (~b)`
-F  | NOT       | `~b`
-G  | XOR       | `a^b`
-H  | NAND      | `~(a&b)`
-I  | AND       | `a&b`
-J  | NXOR      | `~(a^b)`
-K  | /         | `b`
-L  | IMPL      | `~(a & (~b))`
-M  | /         | `a`
-N  | IMPL      | `~(b & (~a))`
-O  | OR        | `a|b`
-P  | /         | `255`
+OP  | Operation | Logical Return Value | OP  | Operation | Logical Return Value
+--- | --------- | -------------------- | --- | --------- | --------------------
+A   | /         | `0`                  | I   | AND       | `a&b`  
+B   | NOR       | `~(a|b)`             | J   | NXOR      | `~(a^b)`     
+C   | NIMPL     | `(~a) & b`           | K   | /         | `b`          
+D   | NOT       | `~a`                 | L   | IMPL      | `~(a & (~b))`
+E   | NIMPL     | `a & (~b)`           | M   | /         | `a`          
+F   | NOT       | `~b`                 | N   | IMPL      | `~(b & (~a))`
+G   | XOR       | `a^b`                | O   | OR        | `a|b`        
+H   | NAND      | `~(a&b)`             | P   | /         | `255`        
+
+
 
 ### IO
 
