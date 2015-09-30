@@ -84,7 +84,7 @@ b        | Result from second POP
 The following operators are available. Their result is pushed onto the stack.
 
 OP | Operation | Logical Return Value
--- | --------- | --------------------
+--- | --------- | --------------------
 A  | /         | `0`
 B  | NOR       | `~(a|b)`
 C  | NIMPL     | `(~a) & b`
@@ -105,7 +105,7 @@ P  | /         | `255`
 ### IO
 
 OP | Purpose
--- | -------
+--- | -------
 x  | Read a single byte (ASCII) from the input
 X  | Pop and write as ASCII char to output
 
