@@ -17,7 +17,7 @@ Variable | Syntax
 1015     | Valid, although it might exceed the programs memory
 2406     | Invalid, contains an operator (`0`)
 
-Variables are non-volatile meaning that their content is preserved thoughout the entire execution, they *can not* be destroyed (only overwritten). They're also global, so that they can be accessed in loops or macros.
+Variables are non-volatile meaning that their content is preserved throughout the entire execution, they *can not* be destroyed (only overwritten). They're also global, so that they can be accessed in loops or macros.
 
 ### The `0` Operator and the Stack
 
