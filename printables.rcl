@@ -1,0 +1,27 @@
+# Prints a block of printable ASCII, linebreak at the half.
+
+0DN0d1                     # var[1] = 1
+01MMMMM01o2                # var[2] = 32
+Y                          # while (1) {
+  02X                      #   putchar(var[2])
+  02q2                     #   var[2]++
+  Y                        #   while (1) {
+    0201MMM01MoMMMgZ       #     if (var[2] != 80) break
+	r0z                    #     call r
+  y                        #   }
+  02qKKKKKKKZ              #   if (var[2] >= 127) break
+y                          # }
+r                          # call r
+
+Q                          # Define macro q
+  9                        # var[9] = pop()
+  01.99                    # var[99] = var[1]
+  Y                        # while (1) {
+    09099g9                #   var[9] = var[9] ^ var[99]
+    09099iZ                #   if (var[9]&var[99] != 0) break
+    099M99                 #   var[99] = <<var[99]
+  y                        # }
+  09                       # push(var[9])
+
+R                          # Define macro r
+  01MMM01MoX               # putchar('\n')

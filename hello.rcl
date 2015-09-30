@@ -1,0 +1,17 @@
+# Prints Hello World.
+
+DM0Dg1                         # Obligatory var[1] = 1
+01M202M303M404M505M606M707     # Set up 7 vars with ascending shifts.
+04q                            # H
+0706o80301o08q                 # e
+0403o08o909X                   # l
+09X                            # l
+0902o01o11011X                 # o
+06X                            #
+011K06g07q                     # W
+011X                           # o
+0805o02q                       # r
+09X                            # l
+0803q                          # d
+0601q                          # !
+QoX                            # Macro: OR and print.
