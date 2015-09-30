@@ -26,8 +26,8 @@ The `0` operator is used to interact with the stack without altering values (lik
 Usage    | Purpose
 -------- | -------
 `0`      | Pushes an empty byte onto the stack.
-`0<var>` | Pushes the content of <var> onto the stack. Preserves the value in <var>.
-`<var>`  | Pops the stack and writes the value to <var>.
+`0<var>` | Pushes the content of `<var>` onto the stack.
+`<var>`  | Pops the stack and writes the value to `<var>`.
 
 ### Comments
 
@@ -65,7 +65,7 @@ There are *only* bitwise operators. Every operator takes to input values, `a` an
 
 **UPPERCASE**
 
-Pops `<val>` from the stack. (Means only *one* pop is performed.)
+Pops `<val>` from the stack. (Only *one* pop is performed.)
 
 Argument | Value
 -------- | -----
