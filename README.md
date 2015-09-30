@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Recall is an esoteric programming language. It handles data using a global stack containing integer values. Values can also be stored in an unlimited number of global variables that are implicitly defined. There are no direct arithmetic operations in Recall, only logical bitwise operations. You have to implement arithmetic using macros.
+Recall is an esoteric programming language inspired by bin ops. It handles data using a global stack containing integer values. Values can also be stored in an unlimited number of global variables that are implicitly defined. There are no direct arithmetic operations in Recall, only logical bitwise operations. You have to implement arithmetic using macros.
 
 ## Reference
 
