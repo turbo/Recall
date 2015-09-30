@@ -2,68 +2,66 @@
 
 ## Introduction
 
-Recall is an esoteric programming language. It handles data using a global stack containing unsigned 8bit values. Values can also be stored in an unlimited number of global variables that are implicitely defined.
+Recall is an esoteric programming language. It handles data using a global stack containing integer values.. Values can also be stored in an unlimited number of global variables that are implicitly defined. There are no direct arithmetic operations in Recall, only logical bitwise operations. You have to implement arithmetic using macros.
 
 ## Reference
 
 ### Variables
 
-You can not push or pop values directly to the stack (except when using the I/O functions). Variables in Recall are all numerical strings that do not contain any zeros. Here are a few examples of variable names:
+Variables in Recall are all numerical strings that do not contain any zeros. Typing a variable name will pop a value from the stack and assign it to the variable. If the stack is empty, 0 is assigned. Here are a few examples of variable names:
 
 Variable | Syntax
 -------- | ------
 1        | Valid
 123      | Valid
-4263532  | Valid, although it might exceed the programs memory
+1015     | Valid, although it might exceed the programs memory
 2406     | Invalid, contains an operator (`0`)
 
-Variables are non-volatile meaning that their content is preserved though the entire execution, they *can not* be destroyed (only emptied). They're also global, so that they can be accessed in loops or subs.
+Variables are non-volatile meaning that their content is preserved thoughout the entire execution, they *can not* be destroyed (only overwritten). They're also global, so that they can be accessed in loops or macros.
 
 ### The `0` Operator and the Stack
 
 The `0` operator is used to interact with the stack without altering values (like the letter operators). It is also the only operator with an (optional) argument:
 
-Usage  | Purpose
------- | -------
-0      | Pushes an empty byte onto the stack.
-0<var> | Pushes the content of <var> onto the stack. Preserves the value in <var>.
-<var>  | Pops the stack and writes the value to <var>.
+Usage    | Purpose
+-------- | -------
+`0`      | Pushes an empty byte onto the stack.
+`0<var>` | Pushes the content of <var> onto the stack. Preserves the value in <var>.
+`<var>`  | Pops the stack and writes the value to <var>.
 
 ### Comments
 
-Comments start with `#` and end with `#`. Technically, all non-operators are ignored, but this is the safe way to comment.
+Comments start with `#` and end at the end of the line (which must be `\n` - CRs are ignored). Technically, all non-operators are ignored, but this is the safe way to comment.
 
-### Loops and Subs
+### Loops and Macros
 
 Loops in Recall are infinite and must be escaped from using the `z` (or `Z`) operator. Loops start with `Y` and end with `y`:
 
 ```
-Y # Begin loop #
-  #
-    do things
-  #
-  z # pop and exit when 0 #
-  Z # pop and exit when not 0 #
+Y        # Begin loop
+         # do things
+  z      # pop and exit when 0
+  Z      # pop and exit when not 0
 y
 ```
 
 Note that both exit operators pop the top value so you have to push something back or the loop is going to delete the whole stack and stall :-).
 
-Another form of flow control are subs (parameterless functions). They are defined after the main code. Each sub ends at the header of the next sub or at the EOF. Each **uppercase** character from `Q` to `W` can hold one sub. Each sub is called from the main code by the **lowercase** letter. Example:
+Another form of flow control are macros (parameterless functions). They are defined after the main code. Each macro ends at the header of the next macro or at the EOF. Each **uppercase** character from `Q` to `W` can hold one macro. Each macro is called from the main code by the **lowercase** letter. Example:
 
 ```
-# main code (read byte from input) #
+# main code (read byte from input)
 xq
 
-# Sub Q (write byte to output) #
+# Sub Q (write byte to output)
 QX
 ```
 
-Loops can be nested. Subs can *not* be recursive (well they can - no implementation stricly forbids this, but the limit before SO is defined by the compiler).
+Loops can be nested. Subs should *not* be recursive (well they can - no implementation strictly forbids this, but the limit before SO is undefined).
 
 ### Operators
 
-There are *only* bitwise operators. Yeah, that's right, *you* have to implement arithmetics. Every operator takes to input values, `a` and `b`. What those are depends on wether the operator is lower- or uppercase. 
+There are *only* bitwise operators. Every operator takes to input values, `a` and `b`. What those are depends on wether the operator is lower- or uppercase. 
 
 **UPPERCASE**
 
@@ -115,7 +113,15 @@ You have to create your own input handler. I suggest you break on LF and ignore 
 
 ### Debugging
 
-Use the `!` operator to dump all variables and the current stack. This includes the offset, hex value and binary representation.
+Use the `!` operator to dump all variables and the current stack. This includes the offset, hex value and binary representation:
+
+```
+>  STACK(0):    E 00000045 00000000000000000000000001000101
+-> VAR(4):        00000020 00000000000000000000000000100000
+-> VAR(3):      e 00000065 00000000000000000000000001100101
+-> VAR(2):        00000020 00000000000000000000000000100000
+-> VAR(1):        00000001 00000000000000000000000000000001
+```
 
 ### NOP
 
@@ -123,21 +129,121 @@ Use `.` whenever you need to separate something (like arguments and variable nam
 
 ## Examples
 
-Is Recall Turin complete? Let me answer this with a Brainfuck interpreter written in Recall (which is probably the slowest on the planet):
+### Hello World
 
 ```
-DC505M22022M32032M606M42042M707M92092M4405022o032o06o042o07o092o044o1305022
-o06o042o092o52052q.q2305022o06o07o93093q.q5403206o07o14014q.q6403206o042o07
-o24024q.q74Yx34034z03MMMMMMMM034o3yY030401r3.4.101zyY040301r4.3.101zY01052g
-Z02Z040301052023s4.3.10zyY01023gZ02z030401023052s3.4.10zyY01093gZ02q20zyY01
-054gZ02u20zyY01014gZx20zyY01064gZ02X0zyY01024gZ03304302r33.43.20zyY01074gZ0
-4303302r43.33.20zyyQ6205.8Y06208g6206208iZ08M808013izy062U7205.9Y07209g7207
-209iz09M909013izy072R53.63.82063MMMMMMMM053o63082013i53082KKKKKKKK820530630
-82S84.94.12.73.83t012073083TY083073012r83.73.12012084gzY012094gZt0zyy
+# Prints Hello World.
+
+DM0Dg1                         # Obligatory var[1] = 1
+01M202M303M404M505M606M707     # Set up 7 vars with ascending shifts.
+04q                            # H
+0706o80301o08q                 # e
+0403o08o909X                   # l
+09X                            # l
+0902o01o11011X                 # o
+06X                            #
+011K06g07q                     # W
+011X                           # o
+0805o02q                       # r
+09X                            # l
+0803q                          # d
+0601q                          # !
+QoX                            # Macro: OR and print.
 ```
 
+Output:
 
+```
+$ recall hello.rcl
+Hello World!
+```
 
+### cat
 
+```
+# cat-like program
 
+Y        # while (1) {
+  x4     #   var[4] = getchar()
+  04X    #   putchar(var[4])
+  04z    #   if (var[4] = 0) break
+y        # }
+```
+
+Output:
+
+```
+$ recall cat.rcl "Repeat"
+Repeat
+```
+
+### Complain
+
+```
+# This program uppercases the input.
+
+0DN0d1            # var[1] = 1
+01MMMMM2          # var[2] = 32
+Y                 # while (1) {
+  x3              #   var[3] = getchar()
+  03z             #   if (var[3] = 0) break
+  020m4           #   var[4] = var[2]
+  Y               #   while (1) {
+    03KKKKKK      #     push var[3] and >> 6 times
+	Z               #     if (pop()) break
+	00m4            #     var[4] = 0
+	0z              #     break
+  y               #   }
+  03              #   push(var[3])
+  04              #   push(var[4])
+  gX              #   putchar(var[3] ^ var[4])
+y                 # }
+```
+
+Output:
+
+```
+$ recall complain.rcl "the case is a lie!"
+THE CASE IS A LIE!
+```
+
+### Printables
+
+```
+# Prints a block of printable ASCII, linebreak at the half.
+
+0DN0d1                     # var[1] = 1
+01MMMMM01o2                # var[2] = 32
+Y                          # while (1) {
+  02X                      #   putchar(var[2])
+  02q2                     #   var[2]++
+  Y                        #   while (1) {
+    0201MMM01MoMMMgZ       #     if (var[2] != 80) break
+	r0z                    #     call r
+  y                        #   }
+  02qKKKKKKKZ              #   if (var[2] >= 127) break
+y                          # }
+r                          # call r
+
+Q                          # Define macro q
+  9                        # var[9] = pop()
+  01.99                    # var[99] = var[1]
+  Y                        # while (1) {
+    09099g9                #   var[9] = var[9] ^ var[99]
+    09099iZ                #   if (var[9]&var[99] != 0) break
+    099M99                 #   var[99] = <<var[99]
+  y                        # }
+  09                       # push(var[9])
+
+R                          # Define macro r
+  01MMM01MoX               # putchar('\n')
+```
+
+Output:
+
+```
+$ recall printables.rcl
+!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNO
+PQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
+```
 
