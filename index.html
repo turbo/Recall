@@ -25,7 +25,7 @@
 						<header>
 							<span class="avatar"><img src="images/avatar.jpg" alt="" /></span>
 							<h1>Recall</h1>
-							<p><a href="http://minxomat.eu/introducing-recall">Tutorial</a></p>
+							<p><a href="http://minxomat.eu/introducing-recall">Tutorial</a> - <a href="https://github.com/minxomat/Recall">Download</a></p>
 						</header>
 						<hr />
 				        <div class="field">
@@ -50,7 +50,7 @@
 						<hr />
 						<footer>
 							<p>
-                                made with <b>&hearts;</b> by <a href="http://minxomat.eu/">minxomat</a> using emscripten, node.js, UglifyJS and asm.js
+                                made with <b>&hearts;</b> by <a href="http://minxomat.eu/">minxomat</a> using emscripten, node.js, UglifyJS and asm.js | design by HTML5UP!
                             </p>
                         </footer>
 					</section>
@@ -59,6 +59,10 @@
 		<!-- Scripts -->
             <script type='text/javascript'>
                 var stdInput, Module, sPermalink;
+                
+                function read(el) {
+                    return document.getElementById(el).value||null;
+                }
                 
                 function getURLParameter(name) {
                     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
@@ -72,21 +76,17 @@
                 
                 function updatePL() {                        
                     sPermalink = 'http://minxomat.github.io/Recall/index.html' + 
-                                 '?code='  + encodeURIComponent(document.getElementById('srccd').value);
+                                 '?code='  + encodeURIComponent(read('srccd'));
                     if (read('input') !== null)
-                        sPermalink += '&input=' + encodeURIComponent(document.getElementById('input').value);
+                        sPermalink += '&input=' + encodeURIComponent(read('input'));
                     
                     document.getElementById('permalink').value = sPermalink;
                 }
                 
-                function read(el) {
-                    return document.getElementById(el).value||null;
-                }
-                
                 function startmanDOM() {
-                    stdInput = document.getElementById('input').value;
+                    stdInput = read('input');
                     Module = {
-                        arguments: [document.getElementById('srccd').value],
+                        arguments: [read('srccd')],
                         print: (function() {
                             var element = document.getElementById('output');
                             return function(text) { 
@@ -100,7 +100,7 @@
                     document.getElementById('output').value = 'Executing...';
                     var inject = document.createElement('script');
                     inject.setAttribute('type', 'text/javascript');
-                    inject.setAttribute('src', 'recall.min.js');
+                    inject.setAttribute('src', 'https://github.com/minxomat/Recall/raw/master/recall.min.js');
                     document.head.appendChild(inject);
                 }
             </script>
