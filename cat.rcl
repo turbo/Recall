@@ -1,7 +1,0 @@
-# cat-like program
-
-Y        # while (1) {
-  x4     #   var[4] = getchar()
-  04X    #   putchar(var[4])
-  04z    #   if (var[4] = 0) break
-y        # }
