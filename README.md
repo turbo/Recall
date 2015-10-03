@@ -4,6 +4,20 @@
 
 Recall is an esoteric programming language inspired by bin ops. It handles data using a global stack containing integer values. Values can also be stored in an unlimited number of global variables that are implicitly defined. There are no direct arithmetic operations in Recall, only logical bitwise operations. You have to implement arithmetic using macros.
 
+## Getting Started
+
+### Using the online interpreter
+
+A asm.js compliant, fast interpreter is here: [minxomat.github.io/Recall](http://minxomat.github.io/Recall). The interpreter is `recall.min.js` and the above page always loads the latest implementation from this repository (or branch) here. It also generates perma-links so you can share programs anywhere else.
+
+### Running Recall locally
+
+Just clone this repo here or download `recall.min.js` and then run it with node.js. You can supply the code and stdin through the console. This way you can read files that contain linefeeds:
+
+```
+echo A 'cat' example. | node recall.min.js "Yx101X01zy"
+```
+
 ## Reference
 
 ### Variables
@@ -20,8 +34,6 @@ Variable | Syntax
 Variables are non-volatile meaning that their content is preserved throughout the entire execution, they *can not* be destroyed (only overwritten). They're also global, so that they can be accessed in loops or macros.
 
 ### The `0` Operator and the Stack
-
-The `0` operator is used to interact with the stack without altering values (like the letter operators). It is also the only operator with an (optional) argument:
 
 Usage    | Purpose
 -------- | -------
@@ -107,137 +119,8 @@ You have to create your own input handler. I suggest you break on LF and ignore 
 
 ### Debugging
 
-Use the `!` operator to dump all variables and the current stack. This includes the offset, hex value and binary representation:
-
-```
->  STACK(0):    E 00000045 00000000000000000000000001000101
--> VAR(4):        00000020 00000000000000000000000000100000
--> VAR(3):      e 00000065 00000000000000000000000001100101
--> VAR(2):        00000020 00000000000000000000000000100000
--> VAR(1):        00000001 00000000000000000000000000000001
-```
+Use the `!` operator to dump all variables and the current stack.
 
 ### NOP
 
 Use `.` whenever you need to separate something (like arguments and variable names).
-
-## Examples
-
-### Hello World
-
-```
-# Prints Hello World.
-
-DM0Dg1                         # Obligatory var[1] = 1
-01M202M303M404M505M606M707     # Set up 7 vars with ascending shifts.
-04q                            # H
-0706o80301o08q                 # e
-0403o08o909X                   # l
-09X                            # l
-0902o01o11011X                 # o
-06X                            #
-011K06g07q                     # W
-011X                           # o
-0805o02q                       # r
-09X                            # l
-0803q                          # d
-0601q                          # !
-QoX                            # Macro: OR and print.
-```
-
-Output:
-
-```
-$ recall hello.rcl
-Hello World!
-```
-
-### cat
-
-```
-# cat-like program
-
-Y        # while (1) {
-  x4     #   var[4] = getchar()
-  04X    #   putchar(var[4])
-  04z    #   if (var[4] = 0) break
-y        # }
-```
-
-Output:
-
-```
-$ recall cat.rcl "Repeat"
-Repeat
-```
-
-### Complain
-
-```
-# This program uppercases the input.
-
-0DN0d1            # var[1] = 1
-01MMMMM2          # var[2] = 32
-Y                 # while (1) {
-  x3              #   var[3] = getchar()
-  03z             #   if (var[3] = 0) break
-  020m4           #   var[4] = var[2]
-  Y               #   while (1) {
-    03KKKKKK      #     push var[3] and >> 6 times
-	Z               #     if (pop()) break
-	00m4            #     var[4] = 0
-	0z              #     break
-  y               #   }
-  03              #   push(var[3])
-  04              #   push(var[4])
-  gX              #   putchar(var[3] ^ var[4])
-y                 # }
-```
-
-Output:
-
-```
-$ recall complain.rcl "the case is a lie!"
-THE CASE IS A LIE!
-```
-
-### Printables
-
-```
-# Prints a block of printable ASCII, linebreak at the half.
-
-0DN0d1                     # var[1] = 1
-01MMMMM01o2                # var[2] = 32
-Y                          # while (1) {
-  02X                      #   putchar(var[2])
-  02q2                     #   var[2]++
-  Y                        #   while (1) {
-    0201MMM01MoMMMgZ       #     if (var[2] != 80) break
-	r0z                    #     call r
-  y                        #   }
-  02qKKKKKKKZ              #   if (var[2] >= 127) break
-y                          # }
-r                          # call r
-
-Q                          # Define macro q
-  9                        # var[9] = pop()
-  01.99                    # var[99] = var[1]
-  Y                        # while (1) {
-    09099g9                #   var[9] = var[9] ^ var[99]
-    09099iZ                #   if (var[9]&var[99] != 0) break
-    099M99                 #   var[99] = <<var[99]
-  y                        # }
-  09                       # push(var[9])
-
-R                          # Define macro r
-  01MMM01MoX               # putchar('\n')
-```
-
-Output:
-
-```
-$ recall printables.rcl
-!"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNO
-PQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
-```
-
