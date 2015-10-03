@@ -58,7 +58,7 @@
 
 		<!-- Scripts -->
             <script type='text/javascript'>
-                var stdInput, Module;
+                var stdInput, Module, sPermalink;
                 
                 function getURLParameter(name) {
                     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
@@ -70,10 +70,17 @@
                 if (sTemp !== null) document.getElementById('input').value = sTemp;
                 updatePL();
                 
-                function updatePL() {
-                    document.getElementById('permalink').value = 'http://run.codegolf.xyz/index.html' + 
-                        '?code='  + encodeURIComponent(document.getElementById('srccd').value) +
-                        '&input=' + encodeURIComponent(document.getElementById('input').value)
+                function updatePL() {                        
+                    sPermalink = 'http://minxomat.github.io/Recall/index.html' + 
+                                 '?code='  + encodeURIComponent(document.getElementById('srccd').value);
+                    if (read('input') !== null)
+                        sPermalink += '&input=' + encodeURIComponent(document.getElementById('input').value);
+                    
+                    document.getElementById('permalink').value = sPermalink;
+                }
+                
+                function read(el) {
+                    return document.getElementById(el).value||null;
                 }
                 
                 function startmanDOM() {
